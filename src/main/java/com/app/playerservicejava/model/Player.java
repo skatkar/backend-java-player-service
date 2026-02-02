@@ -1,6 +1,9 @@
 package com.app.playerservicejava.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name="PLAYERS")
@@ -9,15 +12,19 @@ public class Player {
     @Id
     @Column(name = "PLAYERID")
     @GeneratedValue(strategy = GenerationType.UUID)
+    @NotBlank(message = "Player ID cannot be blank")
     private String playerId;
 
     @Column(name = "BIRTHYEAR")
+    @Pattern(regexp = "\\d{4}", message = "Birth year must be a 4-digit number")
     private String birthYear;
 
     @Column(name = "BIRTHMONTH")
+    @Pattern(regexp = "(0?[1-9]|1[0-2])", message = "Birth month must be 1-12")
     private String birthMonth;
 
     @Column(name = "BIRTHDAY")
+    @Pattern(regexp = "(0?[1-9]|[12][0-9]|3[01])", message = "Birth day must be 1-31")
     private String birthDay;
 
     @Column(name = "BIRTHCOUNTRY")
@@ -48,24 +55,31 @@ public class Player {
     private String deathCity;
 
     @Column(name = "NAMEFIRST")
+    @Size(max = 50, message = "First name cannot exceed 50 characters")
     private String firstName;
 
     @Column(name = "NAMELAST")
+    @NotBlank(message = "Last name is required")
+    @Size(max = 50, message = "Last name cannot exceed 50 characters")
     private String lastName;
 
     @Column(name = "NAMEGIVEN")
     private String givenName;
 
     @Column(name = "WEIGHT")
+    @Pattern(regexp = "\\d{1,3}", message = "Weight must be a number between 1-999")
     private String weight;
 
     @Column(name = "HEIGHT")
+    @Pattern(regexp = "\\d{1,3}", message = "Height must be a number between 1-999")
     private String height;
 
     @Column(name = "BATS")
+    @Pattern(regexp = "[LRB]", message = "Bats must be L, R, or B")
     private String bats;
 
     @Column(name = "THROWS")
+    @Pattern(regexp = "[LR]", message = "Throws must be L or R")
     private String throwStats;
 
     @Column(name = "DEBUT")

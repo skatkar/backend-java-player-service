@@ -6,6 +6,10 @@ import com.app.playerservicejava.model.Players;
 import com.app.playerservicejava.service.CacheEvictionService;
 import com.app.playerservicejava.service.PlayerService;
 import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,8 +50,13 @@ public class PlayerController {
 
     @GetMapping("/filter")
     public HttpEntity<PagedModel<Player>> getPlayers(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) throws ServiceException {
+            @RequestParam(defaultValue = "0")
+            @Min(value = 0, message = "Page number can not be empty")
+            int page,
+            @RequestParam(defaultValue = "10")
+            @Min(value = 1, message = "Page size must be at least 1")
+            @Max(value = 100, message = "Page size can not exceed 10")
+            int size) throws ServiceException {
         Page<Player> players;
         try{
             players = playerService.getPlayers(page, size);
@@ -62,7 +71,10 @@ public class PlayerController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Player> getPlayerById(@PathVariable("id") String id) throws Exception {
+    public ResponseEntity<Player> getPlayerById(
+            @PathVariable("id")
+            @NotBlank(message = "Player ID can not be empty")
+            String id) throws Exception {
         Optional<Player> player = playerService.getPlayerById(id);
 
         if (player.isPresent()) {
@@ -73,7 +85,11 @@ public class PlayerController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Map<String, String>> update(@PathVariable("id") String id, @RequestBody Player player) throws ServiceException {
+    public ResponseEntity<Map<String, String>> update(
+            @PathVariable("id")
+            @NotBlank(message = "Player ID can not be empty")
+            String id,
+            @Valid @RequestBody Player player) throws ServiceException {
         try {
             playerService.updatePlayer(id, player);
             return ResponseEntity.ok(Map.of("message", "successfully updated", "id", id));
@@ -84,7 +100,10 @@ public class PlayerController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Map<String, String>> deleteById(@PathVariable("id") String id) throws ServiceException {
+    public ResponseEntity<Map<String, String>> deleteById(
+            @PathVariable("id")
+            @NotBlank(message = "Player ID can not be empty")
+            String id) throws ServiceException {
         try {
             LOGGER.info("Deleting the player having id {}", id);
             playerService.deletePlayerById(id);

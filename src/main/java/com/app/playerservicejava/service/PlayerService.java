@@ -37,6 +37,10 @@ public class PlayerService {
      * @param page zero-based page index
      * @param size number of records per page
      */
+    @Cacheable(
+            value = "players",
+            key = "'page=' + #page + ',size=' + #size"
+    )
     public Page<Player> getPlayers(int page, int size) {
         if (page < 0 || size <= 0) {
             throw new IllegalArgumentException("Invalid pagination parameters");
