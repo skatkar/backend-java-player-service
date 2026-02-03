@@ -76,6 +76,17 @@ Player service integrates with Ollama 🦙, which allows us to run LLMs locally.
     ```curl
     curl -v --location 'http://localhost:11434/api/generate' --header 'Content-Type: application/json' --data '{"model": "tinyllama","prompt": "why is the sky blue?", "stream": false}'
     ```
+5. Download `mistral` model into ollama container (ollama is the container name, ollama pull mistral means download mistral)
+
+   ```shell
+   docker exec -it ollama ollama pull mistral
+   ```
+
+6. Run `mistral` model in the ollama container
+
+   ```shell
+   docker exec -it ollama ollama run mistral
+   ```
 Having trouble with docker? Try using podman as an alternative. Instructions [here](https://github.com/Intuit-A4A/backend-java-player-service/wiki/Supplemental-Materials:-Set-up-help#alternative-set-up-instructions)
 
 
