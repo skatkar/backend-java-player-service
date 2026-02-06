@@ -87,6 +87,18 @@ Player service integrates with Ollama 🦙, which allows us to run LLMs locally.
    ```shell
    docker exec -it ollama ollama run mistral
    ```
+7. sh into the container
+   ```shell
+   docker exec -it <container_id> sh
+   ```
+   
+8. Check ollama configs inside the container
+   ```shell
+   cd /root/.ollama
+   ls -ltr
+   ```
+
+
 Having trouble with docker? Try using podman as an alternative. Instructions [here](https://github.com/Intuit-A4A/backend-java-player-service/wiki/Supplemental-Materials:-Set-up-help#alternative-set-up-instructions)
 
 
@@ -100,3 +112,6 @@ Having trouble with docker? Try using podman as an alternative. Instructions [he
 
 2. Open your browser and visit `http://localhost:8080/v1/chat/list-models`
    - If the application is running successfully, you will see a json response that include information about tinyllama
+
+### References
+1. [Pagination](https://docs.spring.io/spring-data/commons/reference/repositories/core-extensions.html#core.web.pageables)
